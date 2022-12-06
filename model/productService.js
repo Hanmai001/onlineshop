@@ -108,19 +108,19 @@ let getFilterProduct = async (queryFilter) => {
         sql += 'AND PRICE <= ? ';
         values.push(parseFloat(priceTo))
     }
-    if (typeof sortFilter === 'string') {
+    if (sortFilter && typeof sortFilter === 'string' && (numBuy || sortPrice || timeCreate)) {
         //sort tăng dần
-        if (numBuy && typeof numBuy === 'string') {
+        if (typeof numBuy === 'string') {
             sql += 'ORDER BY NUMBUY';
-            values.push(parseInt(numBuy))
+            //values.push(parseInt(numBuy))
         }
-        if (sortPrice && typeof sortPrice === 'string') {
+        else if (typeof sortPrice === 'string') {
             sql += 'ORDER BY PRICE';
-            values.push(parseFloat(sortPrice))
+            //values.push(parseFloat(sortPrice))
         }
-        if (timeCreate && typeof timeCreate === 'string') {
+        else if (typeof timeCreate === 'string') {
             sql += 'ORDER BY CREATEON';
-            values.push(parseInt(timeCreate))
+            //values.push(parseInt(timeCreate))
         }
         //sort giảm dần
         if (sortFilter === 'down') {
@@ -151,14 +151,14 @@ let getAllPhoto = async () => {
     return result[0];
 };
 let getDetailProduct = async (id) => {
-    const result = await db.connection.execute('SELECT pd.*, br.NAMEBRAND, manu.NAMEMANUFACTURER, mt.NAMEMATERIAL, pt.LINK, rm.NUMREMAIN, ori.NAMEORIGIN  FROM product pd JOIN photo pt ON pt.IDPRODUCT = pd.IDPRODUCT JOIN brand br ON br.IDBRAND = pd.IDBRAND JOIN manufacturer manu ON manu.IDMANUFACTURER = pd.IDMANUFACTURER JOIN material mt ON mt.IDMATERIAL = pd.IDMATERIAL JOIN remain rm ON rm.IDREMAIN = pd.IDREMAIN JOIN origin ori ON ori.IDORIGIN = pd.IDORIGIN WHERE pd.IDPRODUCT = ?', [parseInt(id)]);
+    const result = await db.connection.execute('SELECT pd.*, br.NAMEBRAND, manu.NAMEMANUFACTURER, mt.NAMEMATERIAL, pt.LINK  FROM product pd JOIN photo pt ON pt.IDPRODUCT = pd.IDPRODUCT JOIN brand br ON br.IDBRAND = pd.IDBRAND JOIN manufacturer manu ON manu.IDMANUFACTURER = pd.IDMANUFACTURER JOIN material mt ON mt.IDMATERIAL = pd.IDMATERIAL WHERE pd.IDPRODUCT = ?', [parseInt(id)]);
 
     return result[0];
 
 }
 let getRelatedProducts = async (id) => {
-    const result = await db.connection.execute('SELECT pd.*, pt.LINK FROM product pd JOIN photo pt ON pt.IDPRODUCT = pd.IDPRODUCT JOIN type tp ON tp.IDTYPE = pd.IDTYPE WHERE pd.IDPRODUCT = ? GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1', [parseInt(id)]);
-
+    const result = await db.connection.execute('SELECT pd.*, pt.LINK FROM product pd2, product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT WHERE pd.IDTYPE = pd2.IDTYPE AND pd2.IDPRODUCT = ? GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1', [parseInt(id)]);
+    console.log(result[0]);
     return result[0];
 
 }

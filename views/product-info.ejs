@@ -82,7 +82,9 @@
                             <div class="rate-pane">
                                 <span class="me-5 num-rate text-decoration-underline">4/5</span>
                                 <span class="me-5">78 đã đánh giá</span>
-                                <span>251 đã bán</span>
+                                <span>
+                                    <%= product[0].NUMBUY%> đã bán
+                                </span>
                             </div>
                             <div class="price mt-3">
                                 <span class="fs-3 text-decoration-underline">đ</span>
@@ -96,7 +98,7 @@
                                 <input type="number" readonly value="1">
                                 <button><i class="fa-solid fa-plus"></i></button>
                                 <span class="ms-2">
-                                    <%= product[0].NUMBUY%>
+                                    <%= product[0].REMAIN%> sản phẩm
                                 </span>
                             </div>
                             <div class="confirm-buy">
@@ -117,7 +119,7 @@
                             </div>
                         </div>
 
-                        <div class="d-flex products justi fy-content-between">
+                        <div class="d-flex products">
                             <% for(var i=0; i< relateProducts.length; i++) {%>
                                 <div class="item" onclick="chooseProduct('<%= relateProducts[i].IDPRODUCT %>')">
                                     <div class="img text-center">
@@ -137,7 +139,9 @@
                                     </div>
                                     <div class="sold">
                                         <span class="fw-bold">4/5</span>
-                                        <span class="me-1 fw-bold">12 đã bán</span>
+                                        <span class="me-1 fw-bold">
+                                            <%= relateProducts[i].NUMBUY%> đã bán
+                                        </span>
                                     </div>
                                 </div>
                                 <% } %>
@@ -150,7 +154,7 @@
                             <h6 class="col-12">THÔNG TIN SẢN PHẨM</h6>
                         </div>
                         <div class="row">
-                            <ul class="col-4 tags">
+                            <ul class="col-3 tags ms-3">
                                 <li>Thương hiệu</li>
                                 <li>Chất liệu</li>
                                 <li>Nơi xuất xứ</li>
@@ -159,19 +163,19 @@
                             </ul>
                             <ul class="col-8 results">
                                 <li>
-                                    <%= product[0].NAMEBRAND%>
+                                    <%= product[0].NAMEBRAND ? product[0].NAMEBRAND : "Không có" %>
                                 </li>
                                 <li>
-                                    <%= product[0].NAMEMATERIAL%>
+                                    <%= product[0].NAMEMATERIAL ? product[0].NAMEMATERIAL : "Không có" %>
                                 </li>
                                 <li>
-                                    <%= product[0].NAMEORIGIN%>
+                                    <%= product[0].NAMEMANUFACTURER ? product[0].NAMEMANUFACTURER : "Không có" %>
                                 </li>
                                 <li>
-                                    <%= product[0].EXPIRY.toString().slice(10, 15)%>
+                                    <%= product[0].EXPIRY ? product[0].EXPIRY.toString().slice(10, 15) : "Không có" %>
                                 </li>
                                 <li>
-                                    <%= product[0].NUMREMAIN%>
+                                    <%= product[0].REMAIN%>
                                 </li>
                             </ul>
                         </div>

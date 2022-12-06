@@ -11,7 +11,7 @@ const db = { connection: null };
         host: 'localhost',
         user: 'root',
         database: 'onlineshop',
-        password: 'quang234'
+        password: 'root'
     });
     console.log('Database connected!');
 })();

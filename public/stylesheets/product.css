@@ -224,6 +224,9 @@ html {
     margin-top: 6.5rem;
 }
 
+.product-info .products .item {
+    margin-right: 1rem;
+}
 .product-info .content .relate-products {
     width: 95%;
     background-color: #fff;
