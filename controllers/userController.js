@@ -1,3 +1,4 @@
+import db from '../config/connectDB';
 const datas = require('../model/productService');
 
 let getHomepage = async (req, res) => {

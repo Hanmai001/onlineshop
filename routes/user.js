@@ -1,3 +1,4 @@
+import db from '../config/connectDB';
 const express = require('express');
 const router = express.Router();
 

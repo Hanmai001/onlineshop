@@ -1,4 +1,5 @@
 const express = require('express');
+import db from '../config/connectDB';
 import initUserRoute from './routes/user';
 const path = require('path');
 
