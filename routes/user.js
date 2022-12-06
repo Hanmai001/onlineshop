@@ -1,4 +1,4 @@
-import db from '../config/connectDB';
+const db = require('../config/connectDb');
 const express = require('express');
 const router = express.Router();
 

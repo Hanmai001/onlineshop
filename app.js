@@ -1,4 +1,4 @@
-import db from './config/connectDb';
+const db = require('./config/connectDb');
 const express = require('express');
 import initUserRoute from './routes/user';
 const path = require('path');
