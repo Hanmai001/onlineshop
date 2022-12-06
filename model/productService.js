@@ -1,5 +1,4 @@
-import db from '../config/connectDB';
-
+const db = require('../config/connectDb');
 
 let getAllProduct = async () => {
     const result = await db.connection.execute('SELECT pd.*, pt.LINK FROM product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1');

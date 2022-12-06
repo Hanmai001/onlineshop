@@ -1,4 +1,3 @@
-const db = require('../config/connectDb');
 const datas = require('../model/productService');
 
 let getHomepage = async (req, res) => {
