@@ -2,21 +2,30 @@
 //const db = require('../config/connectDb');
 // get the client
 import mysql from 'mysql2/promise';
+import { createPool } from 'mysql2/promise';
 
-const db = { connection: null };
+// const db = { connection: null };
 
-(async () => {
-    // create the connection to database
-    db.connection = await mysql.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        user: process.env.DB_USER || 'root',
-        database: process.env.DB_NAME || 'onlineshop',
-        password: process.env.DB_PASSWORD || 'root'
-    });
-    console.log('Database connected!');
-})();
+// (async () => {
+//     // create the connection to database
+//     db.connection = await mysql.createConnection({
+//         host: process.env.DB_HOST || 'localhost',
+//         user: process.env.DB_USER || 'root',
+//         database: process.env.DB_NAME || 'onlineshop',
+//         password: process.env.DB_PASSWORD || 'root',
+//     });
+//     console.log('Database connected!');
+// })();
+
+const db = createPool({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    database: process.env.DB_NAME || 'onlineshop',
+    password: process.env.DB_PASSWORD || 'root',
+    port: process.env.DB_PORT || 3306
+})
 let getAllProduct = async () => {
-    const result = await db.connection.execute('SELECT pd.*, pt.LINK FROM product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1');
+    const result = await db.query('SELECT pd.*, pt.LINK FROM product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1');
     return result[0];
 
 };
@@ -142,37 +151,37 @@ let getFilterProduct = async (queryFilter) => {
             sql += ' DESC';
         }
     }
-    const result = await db.connection.execute(sql, values);
+    const result = await db.query(sql, values);
     return result[0];
 }
 let getAllType = async () => {
-    const result = await db.connection.execute('SELECT * FROM `type`');
+    const result = await db.query('SELECT * FROM `type`');
     //console.log(rows);
     return result[0];
 };
 let getAllBrand = async () => {
-    const result = await db.connection.execute('SELECT * FROM `brand`');
+    const result = await db.query('SELECT * FROM `brand`');
     //console.log(rows);
     return result[0];
 };
 let getAllManufacturer = async () => {
-    const result = await db.connection.execute('SELECT * FROM `manufacturer`');
+    const result = await db.query('SELECT * FROM `manufacturer`');
     //console.log(result[0]);
     return result[0];
 };
 let getAllPhoto = async () => {
-    const result = await db.connection.execute('SELECT * FROM `photo`');
+    const result = await db.query('SELECT * FROM `photo`');
     //console.log(rows);
     return result[0];
 };
 let getDetailProduct = async (id) => {
-    const result = await db.connection.execute('SELECT pd.*, br.NAMEBRAND, manu.NAMEMANUFACTURER, mt.NAMEMATERIAL, pt.LINK  FROM product pd JOIN photo pt ON pt.IDPRODUCT = pd.IDPRODUCT JOIN brand br ON br.IDBRAND = pd.IDBRAND JOIN manufacturer manu ON manu.IDMANUFACTURER = pd.IDMANUFACTURER JOIN material mt ON mt.IDMATERIAL = pd.IDMATERIAL WHERE pd.IDPRODUCT = ?', [parseInt(id)]);
+    const result = await db.query('SELECT pd.*, br.NAMEBRAND, manu.NAMEMANUFACTURER, mt.NAMEMATERIAL, pt.LINK  FROM product pd JOIN photo pt ON pt.IDPRODUCT = pd.IDPRODUCT JOIN brand br ON br.IDBRAND = pd.IDBRAND JOIN manufacturer manu ON manu.IDMANUFACTURER = pd.IDMANUFACTURER JOIN material mt ON mt.IDMATERIAL = pd.IDMATERIAL WHERE pd.IDPRODUCT = ?', [parseInt(id)]);
 
     return result[0];
 
 }
 let getRelatedProducts = async (id) => {
-    const result = await db.connection.execute('SELECT pd.*, pt.LINK FROM product pd2, product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT WHERE pd.IDTYPE = pd2.IDTYPE AND pd2.IDPRODUCT = ? GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1', [parseInt(id)]);
+    const result = await db.query('SELECT pd.*, pt.LINK FROM product pd2, product pd JOIN photo pt on pd.IDPRODUCT = pt.IDPRODUCT WHERE pd.IDTYPE = pd2.IDTYPE AND pd2.IDPRODUCT = ? GROUP BY pd.IDPRODUCT HAVING COUNT(*) >= 1', [parseInt(id)]);
     console.log(result[0]);
     return result[0];
 
